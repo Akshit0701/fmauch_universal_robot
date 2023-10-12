@@ -60,11 +60,27 @@
     kinematics_parameters_file
     physical_parameters_file
     visual_parameters_file
-    transmission_hw_interface:=hardware_interface/PositionJointInterface
+    transmission_hw_interface:=hardware_interface/VelocityJointInterface
     safety_limits:=false
     safety_pos_margin:=0.15
     safety_k_position:=20"
   >
+
+  <xacro:property name="ur5_d1" value="0.089159" />
+  <xacro:property name="ur5_a2" value="-0.42500" />
+  <xacro:property name="ur5_a3" value="-0.39225" />
+  <xacro:property name="ur5_d4" value="0.10915" />
+  <xacro:property name="ur5_d5" value="0.09465" />
+  <xacro:property name="ur5_d6" value="0.0823" />  
+
+  <!-- link lengths used in model -->
+  <xacro:property name="shoulder_height" value="${ur5_d1}" />
+  <xacro:property name="upper_arm_length" value="${-ur5_a2}" />
+  <xacro:property name="forearm_length" value="${-ur5_a3}" />
+  <xacro:property name="wrist_1_length" value="${ur5_d4 - elbow_offset - shoulder_offset}" />
+  <xacro:property name="wrist_2_length" value="${ur5_d5}" />
+  <xacro:property name="wrist_3_length" value="${ur5_d6}" />
+
     <!-- Load configuration data from the provided .yaml files -->
     <xacro:read_model_data
       joint_limits_parameters_file="${joint_limits_parameters_file}" 

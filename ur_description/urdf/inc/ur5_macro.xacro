@@ -26,7 +26,7 @@
    kinematics_parameters_file:='$(find ur_description)/config/ur5/default_kinematics.yaml'
    physical_parameters_file:='$(find ur_description)/config/ur5/physical_parameters.yaml'
    visual_parameters_file:='$(find ur_description)/config/ur5/visual_parameters.yaml'
-   transmission_hw_interface:=hardware_interface/PositionJointInterface
+   transmission_hw_interface:=hardware_interface/VelocityJointInterface
    safety_limits:=false
    safety_pos_margin:=0.15
    safety_k_position:=20"

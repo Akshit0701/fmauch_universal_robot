@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="robot" >
+  
+  <!-- UR5 -->
+  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+	
+	<!--Instantiate ur5 -->
+  <xacro:ur5_robot prefix="ur5_arm_" joint_limited="true"/>
+  <link name="world" />
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "ur5_arm_base_link" />
+    <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <!-- Robotiq FT300 Force Sensor -->
+  <xacro:include filename="$(find robotiq_ft_sensor)/urdf/robotiq_ft300.urdf.xacro" />
+	
+	<!--Instantiate ft sensor and connect it to robot link -->
+  <xacro:robotiq_ft300 parent="ur5_arm_ee_link" prefix="ur5_arm_">
+      <origin xyz="0 0 0" rpy="${pi/2.0} ${pi/2.0} ${pi/2.0}"/>
+  </xacro:robotiq_ft300>
+
+  <!-- Robotiq 2f 85 Gripper -->
+	<xacro:include filename="$(find robotiq_2f_85_gripper_visualization)/urdf/robotiq_arg2f_85_model_macro.xacro" />
+
+	<!--Instantiate robotiq_arg2f_85 gripper and connect it to ft sensor link -->  
+  <xacro:robotiq_arg2f_85 prefix=""/>
+  
+  <joint name="ee_joint" type="fixed">
+    <parent link="ur5_arm_ft300_sensor" />
+    <child link = "robotiq_arg2f_base_link" />
+    <origin xyz="0 0 0" rpy="0 3.1415 3.1415"/>
+  </joint>
+  
+		<!--gazebo>
+    	<plugin name="ros_control" filename="libgazebo_ros_control.so"-->
+    	  <!--robotNamespace>/</robotNamespace> DO NOT COMMENT THIS LINE AND THE NEXT LINE
+    	  <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
+    	<!--/plugin>
+		</gazebo-->
+	
+	  <!-- Gazebo FT sensor plugin -->
+  	<!--gazebo reference="ur5_arm_wrist_3_joint">
+    	<provideFeedback>true</provideFeedback>
+  	</gazebo>
+  	<gazebo>
+    	<plugin name="ft_sensor_plugin" filename="libgazebo_ros_ft_sensor.so">
+    	  <updateRate>250.0</updateRate>
+    	  <topicName>ft_sensor/raw</topicName>
+    	  <gaussianNoise>0.0</gaussianNoise>
+    	  <jointName>ur5_arm_wrist_3_joint</jointName>
+    	</plugin>
+  	</gazebo-->
+  
+  	<!-- Gazebo grasping plugin -->
+  	<!--gazebo>
+    	<gripper name="gazebo_gripper">
+    	  <grasp_check>
+    	    <attach_steps>2</attach_steps-->    <!-- default: 20 -->
+    	    <!--detach_steps>2</detach_steps-->    <!-- default: 40 -->
+    	    <!--min_contact_count>2</min_contact_count>
+    	  </grasp_check>
+    	  <gripper_link>left_inner_finger</gripper_link>
+    	  <gripper_link>right_inner_finger</gripper_link>
+    	  <palm_link>ur5_arm_wrist_3_link</palm_link>
+    	</gripper>
+  	</gazebo-->
+
+</robot>
